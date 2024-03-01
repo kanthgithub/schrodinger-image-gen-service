@@ -5,6 +5,7 @@
 1. Ensure your node environment is v18.17.0 or above
 2. copy .env.example in root directory to .env
 3. set your openApiKey in the .env
+4. Default port will in .env will be 3010 and in case if you delete it, application will default to run on 3000
 
 ## Build
 
@@ -12,7 +13,7 @@
 yarn install
 ```
 
-## Run
+## Run Local
 
 ```sh
 yarn start:dev
