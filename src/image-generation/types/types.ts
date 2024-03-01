@@ -20,7 +20,7 @@ export class ImageDescription
     traits: Trait[];
 
     /// Image in base64 format
-    image: string;
+    images: string;
 }
 
 export class ImageGenerationRequest {
@@ -53,7 +53,7 @@ export class ImageQueryResponse {
 
     @IsString()
     @IsBase64()
-    image: string;
+    images: string[];
 
     @IsString()
     @IsNotEmpty()

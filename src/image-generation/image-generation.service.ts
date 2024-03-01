@@ -54,13 +54,13 @@ export class ImageGenerationService {
   async getImage(requestId: string): Promise<ImageQueryResponse> {
     const imageUrlPromise = this.imageMap.get(requestId);
     if (!imageUrlPromise) {
-        throw new Error('Request not found');
+      throw new Error('Request not found');
     }
 
     const imageUrl = await imageUrlPromise;
 
     // Fetch the image from the URL
-    let response = await fetch(imageUrl);
+    const response = await fetch(imageUrl);
 
     // Convert the data stream to a Buffer
     const array = await streamToArray(response.body);
@@ -69,11 +69,14 @@ export class ImageGenerationService {
     // Convert the Buffer to a base64 string
     const base64Image = buffer.toString('base64');
 
+    // Create a data URL
+    const dataUrl = `data:image/png;base64,${base64Image}`;
+
     return {
-        requestId,
-        image: base64Image,
-        status: 'completed',
-        message: 'Image generation completed successfully'
+      requestId,
+      images: [dataUrl],
+      status: 'completed',
+      message: 'Image generation completed successfully'
     };
-}
+  }
 }
