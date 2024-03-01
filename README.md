@@ -34,7 +34,7 @@ docker build -t schrodinger-image-gen-service .
 
 
 ```sh
-docker run -p 3010:3010 schrodinger-image-gen-service
+docker run --env-file .env -p 3010:3010 schrodinger-image-gen-service
 ```
 
 ## Swagger URL
