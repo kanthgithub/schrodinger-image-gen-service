@@ -4,6 +4,8 @@ import { ImageGenerationRequest, ImageGenerationResponse, ImageQueryResponse, Tr
 import { v4 as uuidv4 } from 'uuid';
 import axios from 'axios';
 import fs from 'fs';
+import streamToArray from 'stream-to-array';
+const fetch = require('node-fetch');
 
 @Injectable()
 export class ImageGenerationService {
@@ -50,18 +52,28 @@ export class ImageGenerationService {
   }
 
   async getImage(requestId: string): Promise<ImageQueryResponse> {
-    const imageUrl = await this.imageMap.get(requestId);
-    if (!imageUrl) {
-      throw new Error('Request not found');
+    const imageUrlPromise = this.imageMap.get(requestId);
+    if (!imageUrlPromise) {
+        throw new Error('Request not found');
     }
 
-    const base64Image = await this.getImageData(imageUrl, requestId);
+    const imageUrl = await imageUrlPromise;
+
+    // Fetch the image from the URL
+    let response = await fetch(imageUrl);
+
+    // Convert the data stream to a Buffer
+    const array = await streamToArray(response.body);
+    const buffer = Buffer.concat(array);
+
+    // Convert the Buffer to a base64 string
+    const base64Image = buffer.toString('base64');
 
     return {
-      requestId,
-      image: base64Image,
-      status: 'completed',
-      message: 'Image generation completed successfully'
+        requestId,
+        image: base64Image,
+        status: 'completed',
+        message: 'Image generation completed successfully'
     };
-  }
+}
 }

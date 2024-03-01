@@ -29,9 +29,11 @@
     "class-validator": "^0.14.1",
     "dotenv": "^16.4.5",
     "gm": "^1.25.0",
+    "node-fetch": "2",
     "openai": "^4.28.4",
     "reflect-metadata": "^0.2.0",
     "rxjs": "^7.8.1",
+    "stream-to-array": "^2.3.0",
     "uuid": "^9.0.1"
   },
   "devDependencies": {
