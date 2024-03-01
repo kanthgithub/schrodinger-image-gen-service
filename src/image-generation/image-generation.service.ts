@@ -21,8 +21,9 @@ export class ImageGenerationService {
       traits.push(request.newTrait);
     }
 
-    // Generate sentences from the traits
-    const sentences = await generateSentences({ traits }, traitDefinitions);
+    let sentences = await generateSentences({ traits }, traitDefinitions);
+
+    console.log(`sentences derived from traits are: ${sentences}`);
 
     // Generate the final prompt
     const finalPrompt = await generateFinalPromptFromSentences(basePrompt, sentences);
@@ -54,7 +55,7 @@ export class ImageGenerationService {
   async getImage(requestId: string): Promise<ImageQueryResponse> {
     const imageUrlPromise = this.imageMap.get(requestId);
     if (!imageUrlPromise) {
-      throw new Error('Request not found');
+      throw new Error(`No image found for request ID: ${requestId}`);
     }
 
     const imageUrl = await imageUrlPromise;

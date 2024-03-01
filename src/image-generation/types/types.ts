@@ -1,6 +1,7 @@
 import { IsString, IsArray, IsObject, ValidateNested, IsNotEmpty, IsBase64, validate } from 'class-validator';
 import { Type } from 'class-transformer';
 import fs from 'fs';
+import { ApiProperty } from '@nestjs/swagger';
 
 export class Trait {
     @IsString()
@@ -97,14 +98,26 @@ export const generateSentences = async (request: { traits: Trait[] }, traitDefin
             // Validate the TraitValue object
             let errors = await validate(traitValue);
             if (errors.length > 0) {
-                throw new Error('Validation failed!');
+                throw new Error(`Validation failed during Generate Sentences for trait: ${JSON.stringify(traitValue)}`);
             }
 
             if (traitDef.values.includes(trait.value)) {
                 sentences.push(traitDef.variation.replace('%s', trait.value));
+            } else {
+                throw new Error(`Trait value \`${trait.value}\` is not found under TraitName: \`${traitName}\` in trait definitions -> valid TraitValues are: ${traitDef.values}`);
             }
+        } else {
+            throw new Error(`Trait ${traitName} not found in trait definitions`);
         }
     }
+
+    console.log(`sentences derived from traits are: ${sentences}`);
+
+    if(!sentences || sentences.length === 0) {
+        throw new Error('Dalle3 - No sentences were generated from traits');
+    }
+
+
     return sentences;
 }
 
