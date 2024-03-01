@@ -18,6 +18,24 @@ yarn install
 yarn start:dev
 ```
 
+## Docker Build
+
+- To build the Docker image, you can use the following command:
+
+```sh
+docker build -t schrodinger-image-gen-service .
+```
+
+## Docker Image Run
+
+
+- To run the Docker container, you can use the following command:
+
+
+```sh
+docker run -p 3010:3010 schrodinger-image-gen-service
+```
+
 ## EndPoints
 
 1. Generate Image from traits
@@ -71,3 +89,4 @@ Sample response for Get Image
     "message": "Image generation completed successfully"
 }
 ```
+
